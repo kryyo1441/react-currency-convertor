@@ -1,19 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { currencyConverter } from "./api/postApi";
 
 const App = () => {
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState(''); // Changed initial state to empty string
     const [fromCurrency, setFromCurrency] = useState("USD");
     const [toCurrency, setToCurrency] = useState("INR");
 
-    useQuery()
+    const {data:convertedAmount, isLoading, error, refetch} = useQuery({
+      queryKey:['currency'],
+      queryFn:() => currencyConverter(fromCurrency, toCurrency, parseFloat(amount)), // Ensure amount is passed as a number
+      enabled:false,
+    });
 
-
-    const handleCurrencyConverter =( ) => {}
+    const handleCurrencyConverter = () => {
+      const numAmount = parseFloat(amount);
+      if(numAmount > 0){
+         refetch();
+      }
+    };
 
   return(
-    
-
     <section className="currency-converter">
       <div className="currency-div">
         <h1>Currency Convertor</h1>
@@ -22,7 +29,11 @@ const App = () => {
         <div>
           <label>
             Amount:
-            <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+            <input 
+              type="number" 
+              value={amount} 
+              onChange={(e) => setAmount(e.target.value)}
+            />
           </label>
         </div>
 
@@ -57,10 +68,18 @@ const App = () => {
           </label>
         </section>
 
-        <button disabled={isLoading || amount <= 0} onClick={handleCurrencyConverter}>
-          {isloading? "Converting.." : "convert"}
+        <button disabled={isLoading || parseFloat(amount) <= 0} onClick={handleCurrencyConverter}>
+          {isLoading? "Converting.." : "convert"}
         </button>
         <hr />
+              {convertedAmount && (
+                  <h2>
+                    {amount} {fromCurrency} = {convertedAmount.toFixed(2)} {toCurrency}
+                  </h2>
+              )}
+
+              {error && <p>An error occurred: {error.message}</p>}
+
       </div>
 
     </section>
