@@ -1,7 +1,35 @@
 const App = () => {
   return(
-    <h1>Hello currency</h1>
+    <section className="currency-converter">
+      <div className="currency-div">
+        <h1>Currency Convertor</h1>
+        <hr />
+        <div>
+          <label>
+            Amount:
+            <input type="text" />
+          </label>
+        </div>
+        <section className="currency-selector">
+          <label >
+            From:
+            <select >
+              {["USD", "EUR", "INR", "GBP", "AUD" ].map((currency) => {
+                  return(
+                    <option key={currency} value={currency}> {currency} </option>
+                  )
+              })}
+              
+            </select>
+          </label>
+        </section>
+      </div>
+
+    </section>
   )
 }
 
 export default App;
+
+
+// https://v6.exchangerate-api.com/v6/2cd36c093dd210ded425db8a/latest/USD
