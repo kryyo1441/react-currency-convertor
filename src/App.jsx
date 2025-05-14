@@ -14,6 +14,18 @@ const App = () => {
           <label >
             From:
             <select >
+              {["INR", "EUR", "USD", "GBP", "AUD" ].map((currency) => {
+                  return(
+                    <option key={currency} value={currency}> {currency} </option>
+                  )
+              })}
+              
+            </select>
+          </label>
+
+          <label >
+            From:
+            <select >
               {["USD", "EUR", "INR", "GBP", "AUD" ].map((currency) => {
                   return(
                     <option key={currency} value={currency}> {currency} </option>
@@ -23,6 +35,9 @@ const App = () => {
             </select>
           </label>
         </section>
+
+        <button disabled={isLoading || amount <= 0}>{isloading? "Converting.." : "convert"}</button>
+        <hr />
       </div>
 
     </section>
